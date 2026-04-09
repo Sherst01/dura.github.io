@@ -4,319 +4,138 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VELVET — Video Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --pink: #FF2D78;
-    --pink-soft: #FF6FA3;
-    --pink-pale: #FFD6E7;
-    --pink-glow: rgba(255, 45, 120, 0.25);
     --black: #0A0A0A;
-    --black-card: #1A1A1A;
-    --white: #FAFAFA;
-    --white-dim: rgba(250,250,250,0.7);
+    --card: #1A1A1A;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-  }
-
-  /* AUTH SCREEN */
-  #auth-screen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .auth-bg {
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at 30% 40%, rgba(255,45,120,0.25), transparent 60%);
-  }
-  .auth-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,45,120,0.3);
-    backdrop-filter: blur(20px);
-    border-radius: 28px;
-    padding: 50px 45px;
-    width: 420px;
-    max-width: 90vw;
-    text-align: center;
-  }
-  .auth-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.8rem;
-    font-weight: 900;
-    margin-bottom: 8px;
-  }
-  .auth-logo span { color: var(--pink); }
-
-  /* NAV */
+  body { background: var(--black); color: white; font-family: 'DM Sans', sans-serif; margin:0; }
   nav {
-    position: sticky; top: 0;
-    background: rgba(10,10,10,0.95);
-    backdrop-filter: blur(15px);
-    padding: 0 40px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 100;
+    background: rgba(10,10,10,0.95); backdrop-filter: blur(15px);
+    padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
   }
-  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; }
   .nav-logo span { color: var(--pink); }
 
-  /* MAIN */
-  .main { padding: 50px 40px; max-width: 1200px; margin: 0 auto; }
-
+  .main { padding: 60px 40px; max-width: 1200px; margin: 0 auto; }
   .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 28px;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 30px;
   }
-
   .video-card {
-    background: var(--black-card);
-    border-radius: 20px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.4s;
+    background: var(--card); border-radius: 20px; overflow: hidden; cursor: pointer;
+    transition: transform 0.4s, box-shadow 0.4s;
   }
-  .video-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 50px rgba(255,45,120,0.3);
-  }
+  .video-card:hover { transform: translateY(-10px); box-shadow: 0 25px 60px rgba(255,45,120,0.3); }
 
   .video-thumb {
-    position: relative;
-    aspect-ratio: 16/9;
-    background: #000;
-    overflow: hidden;
+    position: relative; aspect-ratio: 16/9; background: #000;
   }
-  .video-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s;
-  }
-  .video-card:hover .video-thumb img {
-    transform: scale(1.08);
-  }
+  .video-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
   .play-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: 0.3s;
+    position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;
   }
   .video-card:hover .play-overlay { opacity: 1; }
-
   .play-circle {
-    width: 70px; height: 70px;
-    background: var(--pink);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
+    width: 70px; height: 70px; background: var(--pink); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 34px;
   }
 
-  .video-info {
-    padding: 18px 20px;
-  }
-  .video-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-  }
-  .video-desc {
-    color: var(--white-dim);
-    font-size: 0.9rem;
-  }
+  .video-info { padding: 20px; }
+  .video-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 8px; }
 
-  /* PLAYER MODAL */
+  /* Modal */
   #player-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.95);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.96);
+    z-index: 1000; align-items: center; justify-content: center; padding: 20px;
   }
   #player-modal.open { display: flex; }
-
   .modal-content {
-    width: 100%;
-    max-width: 1000px;
-    background: var(--black-card);
-    border-radius: 24px;
-    overflow: hidden;
+    width: 100%; max-width: 1000px; background: var(--card); border-radius: 24px; overflow: hidden;
   }
-
-  .modal-video-wrap {
-    position: relative;
-    padding-top: 56.25%; /* 16:9 */
-    background: #000;
-  }
+  .modal-video-wrap { position: relative; padding-top: 56.25%; }
   .modal-video-wrap iframe {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .modal-info {
-    padding: 25px 30px;
-  }
-  .modal-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    margin-bottom: 12px;
-  }
-  .modal-close {
-    float: right;
-    background: none;
-    border: none;
-    font-size: 28px;
-    color: #aaa;
-    cursor: pointer;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   }
 </style>
 </head>
 <body>
 
-<!-- AUTH -->
-<div id="auth-screen">
-  <div class="auth-box">
-    <div class="auth-logo">VELVET<span>.</span></div>
-    <p style="margin:20px 0 30px; color:#aaa;">Premium Video Experience</p>
-    <button class="btn-primary" style="width:100%; padding:16px; font-size:1.1rem; background:var(--pink); border:none; border-radius:12px; color:white; cursor:pointer;" onclick="showApp()">
-      Начать просмотр
-    </button>
-  </div>
+<nav>
+  <div class="nav-logo">VELVET<span>.</span></div>
+</nav>
+
+<div class="main">
+  <div class="video-grid" id="video-grid"></div>
 </div>
 
-<!-- APP -->
-<div id="app-screen" style="display:none;">
-  <nav>
-    <div class="nav-logo">VELVET<span>.</span></div>
-    <button onclick="logout()" style="background:transparent; border:1px solid #555; color:#ccc; padding:8px 18px; border-radius:8px; cursor:pointer;">Выйти</button>
-  </nav>
-
-  <div class="main">
-    <h1 style="text-align:center; font-family:'Playfair Display',serif; font-size:3rem; margin-bottom:50px;">
-      Смотри то, что <span style="color:var(--pink);">вдохновляет</span>
-    </h1>
-
-    <div class="video-grid" id="video-grid"></div>
-  </div>
-</div>
-
-<!-- PLAYER MODAL -->
 <div id="player-modal">
   <div class="modal-content">
     <div class="modal-video-wrap" id="modal-video-wrap"></div>
-    <div class="modal-info">
-      <button class="modal-close" onclick="closeModal()">✕</button>
-      <h2 class="modal-title" id="modal-title"></h2>
-      <p id="modal-desc" style="color:#aaa;"></p>
+    <div style="padding:25px;">
+      <button onclick="closeModal()" style="float:right; background:none; border:none; font-size:28px; color:#aaa; cursor:pointer;">✕</button>
+      <h2 id="modal-title" style="font-family:'Playfair Display',serif; font-size:1.7rem;"></h2>
+      <p id="modal-desc" style="color:#aaa; margin-top:10px;"></p>
     </div>
   </div>
 </div>
 
 <script>
-// ====================== ТВОИ ВИДЕО ======================
 const VIDEOS = [
   {
     id: 1,
-    title: "снимает колхозные липсинги  ",
+    title: "Розовый вайб #1",
     url: "https://streamable.com/lyj7ip",
-    desc: "просто дура ниче интересного",
+    desc: "Красивое атмосферное видео в нежных розовых тонах",
     thumbnail: "https://cdn-cf-east.streamable.com/image/lyj7ip.jpg"
   },
   {
     id: 2,
-    title: "Дура на фотосесси",
+    title: "Розовый вайб #2",
     url: "https://streamable.com/rx0m5p",
-    desc: "просто дура ниче интересного",
+    desc: "Второе стильное видео из коллекции",
     thumbnail: "https://cdn-cf-east.streamable.com/image/rx0m5p.jpg"
   }
 ];
 
 function renderVideos() {
   const grid = document.getElementById('video-grid');
-  grid.innerHTML = VIDEOS.map(video => `
-    <div class="video-card" onclick="openVideo(${video.id})">
+  grid.innerHTML = VIDEOS.map(v => `
+    <div class="video-card" onclick="openVideo(${v.id})">
       <div class="video-thumb">
-        <img src="${video.thumbnail}" alt="${video.title}">
-        <div class="play-overlay">
-          <div class="play-circle">▶</div>
-        </div>
+        <img src="${v.thumbnail}" alt="${v.title}">
+        <div class="play-overlay"><div class="play-circle">▶</div></div>
       </div>
       <div class="video-info">
-        <div class="video-title">${video.title}</div>
-        <div class="video-desc">${video.desc}</div>
+        <div class="video-title">${v.title}</div>
+        <div style="color:#aaa;">${v.desc}</div>
       </div>
     </div>
   `).join('');
 }
 
 function openVideo(id) {
-  const video = VIDEOS.find(v => v.id === id);
-  if (!video) return;
-
-  const embedUrl = video.url.replace("streamable.com/", "streamable.com/e/");
+  const v = VIDEOS.find(x => x.id === id);
+  const embed = v.url.replace('streamable.com/', 'streamable.com/e/');
 
   document.getElementById('modal-video-wrap').innerHTML = `
-    <iframe src="${embedUrl}" 
-            frameborder="0" 
-            allowfullscreen 
-            allow="autoplay">
-    </iframe>
+    <iframe src="${embed}" frameborder="0" allowfullscreen allow="autoplay"></iframe>
   `;
-
-  document.getElementById('modal-title').textContent = video.title;
-  document.getElementById('modal-desc').textContent = video.desc;
-
+  document.getElementById('modal-title').textContent = v.title;
+  document.getElementById('modal-desc').textContent = v.desc;
   document.getElementById('player-modal').classList.add('open');
 }
 
 function closeModal() {
   document.getElementById('player-modal').classList.remove('open');
-  // Очищаем iframe чтобы видео остановилось
-  setTimeout(() => {
-    document.getElementById('modal-video-wrap').innerHTML = '';
-  }, 300);
 }
 
-function showApp() {
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'block';
-  renderVideos();
-}
-
-function logout() {
-  if (confirm("Выйти из аккаунта?")) {
-    location.reload();
-  }
-}
-
-// Автозапуск (чтобы сразу видеть видео без регистрации)
-window.onload = () => {
-  showApp();
-};
+window.onload = renderVideos;
 </script>
 </body>
 </html>
